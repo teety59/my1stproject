@@ -21,7 +21,9 @@ def update_sales_data(item, amount, price):
     # Append the new transaction to the sales DataFrame
     total = float(price)*int(amount)
     new_transaction = {"Time": current_time, "Item": item, "Amount": amount, "Price": price,"Total":total}
-    df_sales = df_sales.append(new_transaction, ignore_index=True)
+    x = pd.DataFrame(new_transaction,index =[0])
+    print(x)    
+    df_sales = pd.concat([df_sales, x], ignore_index=True)
 
     # Save the updated sales DataFrame back to the "sales.xlsx" file
     df_sales.to_excel("sales.xlsx", index=False)
