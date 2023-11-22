@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Transactions</title>
+</head>
+<body>
+    <header>
+        <h1>Shop Transactions</h1>
+        
+        <!-- Button to go to the dashboard page -->
+        <a href="/dashboard"><button>Dashboard</button></a>
+    </header>
+
+    <form action="/submit" method="post">
+        <!-- Replace the text input with a dropdown list -->
+        <label for="item">Item:</label>
+        <select id="item" name="item" required onchange="updatePrice()">
+            {% for stock_item, price in stock_data %}
+                <option value="{{ stock_item }}" data-price="{{ price }}">{{ stock_item }}</option>
+            {% endfor %}
+        </select><br>
+
+        <!-- Display the price in another textbox -->
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" readonly><br>
+
+        <!-- Ensure that the amount is not negative -->
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required oninput="validateAmount()"><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function updatePrice() {
+            var itemSelect = document.getElementById("item");
+            var priceTextbox = document.getElementById("price");
+            
+            // Get the selected option
+            var selectedOption = itemSelect.options[itemSelect.selectedIndex];
+            
+            // Update the price textbox with the data-price attribute of the selected option
+            priceTextbox.value = selectedOption.getAttribute("data-price");
+        }
+
+        function validateAmount() {
+            var amountInput = document.getElementById("amount");
+            
+            // Ensure that the amount is not negative
+            if (amountInput.value < 0) {
+                amountInput.value = 0;
+            }
+        }
+    </script>
+</body>
+</html>

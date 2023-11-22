@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Transactions</title>
+
+    <!-- Add Bootstrap CSS (you can download it or link to a CDN) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        /* Add any custom styles here */
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Shop Transactions</h1>
+
+        <!-- Button to go to the dashboard page -->
+        <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+
+        <!-- Button to go to the stock page -->
+        <a href="/stock" class="btn btn-secondary">Stock</a>
+    </header>
+
+    <form action="/submit" method="post" class="container mt-4">
+        <div class="row">
+            <!-- Replace the text input with a dropdown list -->
+            <div class="col-md-4 mb-4">
+                <label for="item">Item:</label>
+                <select id="item" name="item" class="form-control" required onchange="updatePrice()">
+                    {% for stock_item, price in stock_data %}
+                    <option value="{{ stock_item }}" data-price="{{ price }}">{{ stock_item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Display the price in another textbox -->
+            <div class="col-md-4 mb-4">
+                <label for="price">Price:</label>
+                <input type="text" id="price" name="price" class="form-control" readonly>
+            </div>
+
+            <!-- Ensure that the amount is not negative -->
+            <div class="col-md-4 mb-4">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" class="form-control" required oninput="validateAmount()">
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary" onclick="prepareData()">Submit</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Modal for success message -->
+
+
+    <script>
+        function updatePrice() {
+            var itemSelect = document.getElementById("item");
+            var priceTextbox = document.getElementById("price");
+
+            // Get the selected option
+            var selectedOption = itemSelect.options[itemSelect.selectedIndex];
+
+            // Update the price textbox with the data-price attribute of the selected option
+            priceTextbox.value = selectedOption.getAttribute("data-price");
+        }
+
+        function validateAmount() {
+            var amountInput = document.getElementById("amount");
+
+            // Ensure that the amount is not negative
+            if (amountInput.value <= 0) {
+                amountInput.value = 0;
+            }
+        }
+
+        function prepareData() {
+            updatePrice();
+
+            // Check if the amount is blank
+            var amountInput = document.getElementById("amount");
+            if (amountInput.value === "") {
+                alert("Please enter the amount.");
+                return; // Stop further execution
+            }
+
+            // You can add additional logic here if needed
+
+            // Show the success alert
+            alert("Transaction successful!");
+        }
+    </script>
+
+    <!-- Add Bootstrap JS (you can download it or link to a CDN) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            vertical-align: middle; /* Align content in the middle vertically */
+        }
+
+        th:first-child, td:first-child {
+            text-align: left; /* Left-align the first column */
+        }
+
+        th:last-child, td:last-child {
+            text-align: center; /* Center-align the last column */
+        }
+
+        th {
+            background-color: #f2f2f2; /* Add a background color to header cells */
+        }
+    </style>
+</head>
+<body>
+    <h1>Stock</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for index, row in stock.iterrows() %}
+                <tr>
+                    <td>{{ row['ชื่อ'] }}</td>
+                    <td>{{ row['stock'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
