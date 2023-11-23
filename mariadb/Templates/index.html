@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Transactions</title>
+
+    <!-- Add Bootstrap CSS (you can download it or link to a CDN) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        /* Add any custom styles here */
+
+        body {
+            padding: 20px;
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="mb-4">
+        <h1>Shop Transactions</h1>
+
+        <!-- Buttons to go to the dashboard and stock pages -->
+        <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+        <a href="/stock" class="btn btn-secondary">Stock</a>
+    </header>
+
+    <div class="container">
+        <form action="/submit" method="post">
+            <!-- Item dropdown -->
+            <div class="form-group">
+                <label for="item">Item:</label>
+                <select id="item" name="item" class="form-control" required onchange="updatePrice()">
+                    {% for stock_item, price in stock_data %}
+                    <option value="{{ stock_item }}" data-price="{{ price }}">{{ stock_item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Price display -->
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="text" id="price" name="price" class="form-control" readonly>
+            </div>
+
+            <!-- Amount input -->
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" class="form-control" required oninput="validateAmount()">
+            </div>
+
+            <!-- Submit button -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block" onclick="prepareData()">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Add Bootstrap JS (you can download it or link to a CDN) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <!-- Script for updating the price -->
+    <script>
+        function updatePrice() {
+            var itemSelect = document.getElementById("item");
+            var priceTextbox = document.getElementById("price");
+
+            // Get the selected option
+            var selectedOption = itemSelect.options[itemSelect.selectedIndex];
+
+            // Update the price textbox with the data-price attribute of the selected option
+            priceTextbox.value = selectedOption.getAttribute("data-price");
+        }
+
+        // Function to validate the amount
+        function validateAmount() {
+            var amountInput = document.getElementById("amount");
+
+            // Ensure that the amount is not negative
+            if (amountInput.value <= 0) {
+                amountInput.value = 0;
+            }
+        }
+
+        // Function to prepare data
+        function prepareData() {
+            updatePrice();
+
+            // Check if the amount is blank
+            var amountInput = document.getElementById("amount");
+            if (amountInput.value === "") {
+                alert("Please enter the amount.");
+                return; // Stop further execution
+            }
+
+            // You can add additional logic here if needed
+
+            // Show the success alert
+            alert("Transaction successful!");
+        }
+    </script>
+</body>
+
+</html>
